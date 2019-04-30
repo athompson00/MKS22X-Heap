@@ -43,12 +43,19 @@ public class Heap{
        }
      }
 
-  private static void pushUp(int[]data,int index)
+  private static void pushUp(int[]data,int index){
   /*
        - push the element at index i up into the correct position. This will swap it with the parent node until the parent node is larger or the root is reached. [ should be O(logn) ]
        - precondition: index is between 0 and data.length-1 inclusive.
   */
-
+  while ((index - 1) / 2 >= 0 && data[index] > data[(index - 1) / 2]){
+    int n = data[(index - 1) / 2];
+    data[(index - 1) / 2] = data[index];
+    data[index] = n;
+    index = (index - 1) / 2;
+  }
+  
+}
   //We will discuss this today:
   public static void heapify(int[])
   /*
