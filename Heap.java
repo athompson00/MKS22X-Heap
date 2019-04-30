@@ -1,6 +1,13 @@
 import java.util.*;
 public class Heap{
 
+  public static void main(String[] args) {
+    int[] data = {5, 12, -3, 2, -12, 4, 3, 6, 2, 9, 10, 2};
+    System.out.println(Arrays.toString(data));
+    //pushDown(data,data.length - 1, 1);
+    heapsort(data);
+    System.out.println(Arrays.toString(data));
+  }
   //We discussed these 2 methods already:
   private static void pushDown(int[]data,int size,int index){
   /*
@@ -10,31 +17,32 @@ public class Heap{
        - precondition: size is between 0 and data.length-1 inclusive.
        */
        int temp = index;
-       while ((2 * index + 1) <= size){
-         if (index * 2 + 2 <= size){
-           if (data[index * 2 + 1] > data[index * 2 + 2]){
+       if (2 * index + 1 == size){
+         if (data[index] < data[index * 2 + 1]){
+           int n = data[index * 2 + 1];
+           data[index * 2 + 1] = data[index];
+           data[index] = n;
+           index = index * 2 + 1;
+         }
+       }
+       while ((2 * index + 2) <= size){
+         if ((index * 2) + 2 <= size){
+           if (data[index * 2 + 1] >= data[index * 2 + 2]){
              if (data[index] < data[index * 2 + 1]){
                int n = data[index * 2 + 1];
                data[index * 2 + 1] = data[index];
                data[index] = n;
-               index = index + 2 + 1;
+               index = index * 2 + 1;
              }
-           }
+           } else
            if (data[index * 2 + 1] < data[index * 2 + 2]){
              if (data[index] < data[index * 2 + 2]){
                int n = data[index * 2 + 2];
                data[index * 2 + 2] = data[index];
                data[index] = n;
-               index = index + 2 + 2;
+               index = index * 2 + 2;
              }
            }
-       } else {
-         if (data[index] < data[index * 2 + 1]){
-           int n = data[index * 2 + 1];
-           data[index * 2 + 1] = data[index];
-           data[index] = n;
-           index = index + 2 + 1;
-         }
        }
        if (index == temp){
          index = size + 1;
@@ -42,6 +50,7 @@ public class Heap{
          temp = index;
        }
      }
+   }
 
   private static void pushUp(int[]data,int index){
   /*
@@ -54,19 +63,37 @@ public class Heap{
     data[index] = n;
     index = (index - 1) / 2;
   }
-  
+
 }
   //We will discuss this today:
-  public static void heapify(int[])
+  public static void heapify(int[] data){
   /*
       - convert the array into a valid heap. [ should be O(n) ]
       */
-
-  public static void heapsort(int[])
+      for (int i = data.length - 1; i >= 0; i--){
+        pushDown(data, data.length - 1, i);
+      }
+  }
+  public static void heapsort(int[] data){
   /*
       - sort the array [ should be O(nlogn) ] :
        converting it into a heap
        removing the largest value n-1 times (remove places at end of the sub-array).
        */
 
+       //heapify(data);
+       heapify(data);
+       //System.out.println(Arrays.toString(data));
+       for (int i = data.length - 1; i > 0; i--){
+         //System.out.println(Arrays.toString(data));
+         int n = data[i];
+         data[i] = data[0];
+         data[0] = n;
+         //System.out.println(Arrays.toString(data));
+         pushDown(data, i - 1, 0);
+        // System.out.println(Arrays.toString(data));
+         //System.out.println('\n');
+       }
+
+  }
 }
